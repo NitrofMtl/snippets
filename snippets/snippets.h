@@ -39,6 +39,13 @@
 
 #define LOCK 1
 
+//template to pass array number of element to function
+template <typename T, size_t N>
+inline
+size_t SizeOfArray( const T(&)[ N ] )
+{
+  return N;
+}
 
 //void getNTPTime();
 void setClock(EthernetUDP *Udp);
@@ -51,7 +58,7 @@ void printTime();
 void timeIp(IPAddress t_IP);
 void setTimeZone(int zone);
 
-
+uint8_t roundDown(int numToRound, int multiple);
 
 String intToOnOff(byte inInt);
 String onOffBool(bool inBool);
@@ -84,10 +91,20 @@ public:
 	void timeOut(void (*function)());
 	void reset();
 private:
-	unsigned int lastMillis = 0;
+	unsigned long lastMillis = 0;
 	bool chkLOCK = 0;
-	unsigned int trigger = 0-1;
+	unsigned long trigger = 0-1;
+  bool timerOverflow = false;
 };
 
+class WebFileBuffer {
+  public:
+    WebFileBuffer(char* webFileName);
+    char* name;
+    File getWebFile();
+  private:
+    File *webFileBuffed = new File;
+    char* get(File bckFile);
+};
 
 #endif
