@@ -1,0 +1,31 @@
+SizeOfArray	KEYWORD1
+setClock	KEYWORD1
+getNtpTime	KEYWORD1
+sendNTPpacket	KEYWORD1
+printDigits	KEYWORD1
+digitalClockDisplay	KEYWORD1
+printTime	KEYWORD1
+timeIp	KEYWORD1
+setTimeZone	KEYWORD1
+roundDown	KEYWORD1
+intToOnOff	KEYWORD1
+onOffBool	KEYWORD1
+toString	KEYWORD1
+stringToBool	KEYWORD1
+onOffToInt	KEYWORD1
+Snippets	KEYWORD2
+snippets	KEYWORD2
+funcDelay	KEYWORD1
+
+Backup	KEYWORD2
+begin	KEYWORD1
+get	KEYWORD1
+
+SetSchedule	KEYWORD2
+interval	KEYWORD1
+timeOut	KEYWORD1
+reset	KEYWORD1
+
+WebFileBuffer	KEYWORD2
+getWebFile	KEYWORD1
+
