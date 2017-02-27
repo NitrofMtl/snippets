@@ -1,4 +1,4 @@
-/*
+s/*
   Copyright (c) 28/03/2016
 
     By Nitrof
@@ -83,19 +83,6 @@ private:
 
 };
 
-class SetSchedule {
-public:
-	void interval(void (*function)(), int delay);
-	void timeOut(int delay);
-	void timeOut(int delay, bool lock);
-	void timeOut(void (*function)());
-	void reset();
-private:
-	unsigned long lastMillis = 0;
-	bool chkLOCK = 0;
-	unsigned long trigger = 0-1;
-  bool timerOverflow = false;
-};
 
 class WebFileBuffer {
   public:
