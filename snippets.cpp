@@ -140,7 +140,7 @@ void printDigits(int digits){
 }
 
 
-/*  this one could be add to templating
+  //this one could be add to templating
 uint8_t roundDown(int numToRound, int multiple){  // add to template
     if (multiple == 0) 
       return numToRound;
@@ -148,7 +148,7 @@ uint8_t roundDown(int numToRound, int multiple){  // add to template
     if (remainder == 0) 
       return numToRound;
     return numToRound - remainder;
-}*/
+}
 
 int average(int inputAv, int numReadings = 5){
 
@@ -170,43 +170,8 @@ String onOffBool(bool inBool) {
   return OnOff;
 }
 
-/*
-String intToOnOff(byte inInt) {
-  String output;
-  if (inInt == 0) {
-    output = "Off";
-  }
-  else {
-    output = "On";
-  }
-  return output;
-}*/
 
-/*
-String toString(const char* inchar) {
-  String outString;
-  for (byte i = 0; i < strlen(inchar); i++) {
-    outString += inchar[i];
-  }
-  return outString;
-}*/
-
-/*
-bool stringToBool(const char* inChar) {
-  if (inChar == "true") {
-    return true;
-  } else if (inChar == "false") {
-    return false;
-  }
-}*/
-
-/*not used
-byte onOffToInt( const char* input) {
-  return (strcmp(input, "on") == 0) ? 1 : 0;
-}*/
-
-
-///// mebay not used
+///// maybe not used
 int Snippets::funcDelay(int delay) {  //delay with loop lag remove
   int delayOutput =  (delay - (millis() - lastMillis));
   delayOutput = constrain(delayOutput, 1, delay); //delay min 1 to remove possible bug on 0 delay.. ?
@@ -244,66 +209,4 @@ char* Backup::get(){
     }
     return pBuffer;
     free(pBuffer);                              // Free the memory that was used by the buffer.
-}
-
-
-
-
-void SetSchedule::interval(void (*function)(), int delay){
-  if (lastMillis < millis()){
-    (function)();
-    lastMillis = lastMillis + delay;
-  }
-}
-
-void SetSchedule::timeOut(int delay){
-  if(chkLOCK) return;
-  trigger = millis()+delay;
-  unsigned long testvar = 0-1; // cach a var with maximum type long value
-  if( (testvar-millis()) < delay) { //check if delay overflow millis timer
-    lastMillis = millis(); // store check point
-    timerOverflow = true; // set a lock for handler to wait millis overflow before activate 
-  }
-}
-
-void SetSchedule::timeOut(int delay, bool lock){
-  if(chkLOCK) return;
-  trigger = millis()+delay;
-  unsigned long testvar = 0-1; // cach a var with maximum type long value
-  if( (testvar-millis()) < delay) { //check if delay overflow millis timer
-    lastMillis = millis(); // store check pointe
-    timerOverflow = true; // set a lock for handler to wait millis overflow before activate 
-  }
-  chkLOCK = 1;
-}
-
-void SetSchedule::timeOut(void (*function)()){
-  if(timerOverflow && lastMillis < millis()) return; //break function if delay have rool back millis until millis have rool back
-  if (trigger < millis()) {
-    (function)(); // do callback
-    trigger = 0-1; //reset timer
-    chkLOCK = 0; //reset lock
-    lastMillis = 0; //reset last reading
-    timerOverflow = false; //reset overflow detection
-  }
-}
-
-bool SetSchedule::timeOutBool(){
-  if( (timerOverflow) && (lastMillis < millis()) ) return false; //break function if delay have rool back millis until millis have rool back
-  if (trigger < millis()) {
-    trigger = 0-1; //reset timer
-    chkLOCK = 0; //reset lock
-    lastMillis = 0; //reset last reading
-    timerOverflow = false; //reset overflow detection
-    return true;
-  }
-  else return false;
-}
-
-
-void SetSchedule::reset(){
-    trigger = 0-1;
-    chkLOCK = 0; 
-    lastMillis = 0; //reset last reading
-    timerOverflow = false; //reset overflow detection 
 }

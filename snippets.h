@@ -32,7 +32,6 @@
 #include <SD.h>
 
 #include <Ethernet2.h>
-//#include <EthernetClient.h>
 #include <EthernetServer.h>
 #include <EthernetUdp2.h>
 #include <TimeLib.h>
@@ -58,13 +57,7 @@ void printTime();
 void timeIp(IPAddress t_IP);
 void setTimeZone(int zone);
 
-//uint8_t roundDown(int numToRound, int multiple);
-
-//String intToOnOff(byte inInt);
 String onOffBool(bool inBool);
-//String toString(const char* inchar);
-//bool stringToBool(const char* inChar);
-//byte onOffToInt( const char* input);
 
 class Snippets {
 public:
@@ -73,30 +66,12 @@ private:
 	int lastMillis = 0; //marker for lag correction delay
 };
 
-
 class Backup {
 public:
 	Backup(){};
 	void begin();
 	char* get();
 private:
-
-};
-
-class SetSchedule {
-public:
-	void interval(void (*function)(), int delay);
-  void timeOut(void (*function)());
-	void timeOut(int delay);
-	void timeOut(int delay, bool lock);
-  bool timeOutBool();
-
-	void reset();
-private:
-	unsigned long lastMillis = 0;
-	bool chkLOCK = 0;
-	unsigned long trigger = 0-1;
-  bool timerOverflow = false;
 };
 
 class WebFileBuffer {
@@ -108,5 +83,4 @@ class WebFileBuffer {
     File *webFileBuffed = new File;
     char* get(File bckFile);
 };
-
 #endif
