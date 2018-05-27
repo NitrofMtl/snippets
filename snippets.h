@@ -48,8 +48,7 @@ size_t SizeOfArray( const T(&)[ N ] )
   return N;
 }
 
-//void getNTPTime();
-void setClock(EthernetUDP *Udp);
+void setClock();
 
 time_t getNtpTime();
 void sendNTPpacket(IPAddress &address);

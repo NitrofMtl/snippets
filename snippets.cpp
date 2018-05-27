@@ -34,19 +34,18 @@
 #include <EthernetUdp2.h>
 #include <TimeLib.h>
 
-IPAddress timeServer(132, 163, 4, 101); // time-a.timefreq.bldrdoc.gov
-EthernetUDP *Udp2;
+IPAddress timeServer(132, 163, 97, 1); // time-a.timefreq.bldrdoc.gov
+extern EthernetUDP Udp;
 
 void timeIp(IPAddress t_IP){
   IPAddress timeServer(t_IP);
 }
 
-void setClock(EthernetUDP *Udp){
-  Udp2 = Udp;
+void setClock(){
   setSyncProvider(getNtpTime);
 }
 
-int timeZone = -5;     // Eastern time
+int timeZone = -4;     // Eastern time
 
 void setTimeZone(int zone){
   timeZone = zone;
@@ -58,16 +57,16 @@ byte packetBuffer[NTP_PACKET_SIZE]; //buffer to hold incoming & outgoing packets
 
 time_t getNtpTime()
 {
-  while (Udp2->parsePacket() > 0) ; // discard any previously received packets
+  while (Udp.parsePacket() > 0) ; // discard any previously received packets
   Serial.println("Transmit NTP Request");
   sendNTPpacket(timeServer);
   uint32_t beginWait = millis();
   Serial.println("waiting");
   while (millis() - beginWait < 1500) {
-    int size = Udp2->parsePacket();
+    int size = Udp.parsePacket();
     if (size >= NTP_PACKET_SIZE) {
       Serial.println("Receive NTP Response");
-      Udp2->read(packetBuffer, NTP_PACKET_SIZE);  // read packet into the buffer
+      Udp.read(packetBuffer, NTP_PACKET_SIZE);  // read packet into the buffer
       unsigned long secsSince1900;
       // convert four bytes starting at location 40 to a long integer
       secsSince1900 =  (unsigned long)packetBuffer[40] << 24;
@@ -78,7 +77,10 @@ time_t getNtpTime()
     }
   }
   Serial.println("No NTP Response :-(");
-  return 0; // return 0 if unable to get the time
+  delay(100);//retry
+  time_t getTime =  getNtpTime();
+  if (getTime) return getTime;
+  else return 0; // return 0 if unable to get the time
 }
 
         // send an NTP request to the time server at the given address
@@ -100,9 +102,9 @@ Serial.println("sending packet");
   packetBuffer[15]  = 52;
   // all NTP fields have been given values, now
   // you can send a packet requesting a timestamp:                 
-  Udp2->beginPacket(address, 123); //NTP requests are to port 123
-  Udp2->write(packetBuffer, NTP_PACKET_SIZE);
-  Udp2->endPacket();
+  Udp.beginPacket(address, 123); //NTP requests are to port 123
+  Udp.write(packetBuffer, NTP_PACKET_SIZE);
+  Udp.endPacket();
 }
 
 time_t prevDisplay = 0; // when the digital clock was displayed
@@ -124,9 +126,10 @@ void digitalClockDisplay(){
   printDigits(second());
   Serial.print(" ");
   Serial.print(day());
-  Serial.print(" ");
+  Serial.print("/");
+  if (month() < 10) Serial.print("0");
   Serial.print(month());
-  Serial.print(" ");
+  Serial.print("/");
   Serial.print(year()); 
   Serial.println(); 
 }
