@@ -62,7 +62,7 @@ time_t getNtpTime()
   sendNTPpacket(timeServer);
   uint32_t beginWait = millis();
   Serial.println("waiting");
-  while (millis() - beginWait < 1500) {
+  while (millis() - beginWait < 3000) {
     int size = Udp.parsePacket();
     if (size >= NTP_PACKET_SIZE) {
       Serial.println("Receive NTP Response");
