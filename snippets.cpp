@@ -28,11 +28,6 @@
 #endif
 #include "snippets.h"
 
-#include <Ethernet2.h>
-#include <EthernetClient.h>
-#include <EthernetServer.h>
-#include <EthernetUdp2.h>
-#include <TimeLib.h>
 
 IPAddress timeServer(132, 163, 97, 1); // time-a.timefreq.bldrdoc.gov
 extern EthernetUDP Udp;

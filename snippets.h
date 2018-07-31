@@ -31,11 +31,9 @@
 #endif
 #include <SD.h>
 
-#include <Ethernet2.h>
-//#include <Ethernet.h> //to use ethernet shield 1, mute ethernet2.h and unmute ethernet.h
+#include <Ethernet.h> ////now version 2.0 compatible with ethernet shield 1 and 2
 #include <EthernetServer.h>
-#include <EthernetUdp2.h>
-//#include <EthernetUdp.h> //to use ethernet shield 1, mute EthernetUdp2.h and unmute EthernetUdp.h
+#include <EthernetUdp.h> //now version 2.0 compatible with ethernet shield 1 and 2
 #include <TimeLib.h>
 
 #define LOCK 1
