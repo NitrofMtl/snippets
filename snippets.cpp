@@ -40,6 +40,10 @@ void setClock(){
   setSyncProvider(getNtpTime);
 }
 
+void setClock(const char* addr){
+  setSyncProvider(getNtpTime);
+}
+
 int timeZone = -4;     // Eastern time
 
 void setTimeZone(int zone){
@@ -57,7 +61,7 @@ time_t getNtpTime()
   sendNTPpacket(timeServer);
   uint32_t beginWait = millis();
   Serial.println("waiting");
-  while (millis() - beginWait < 3000) {
+  while (millis() - beginWait < 5000) {
     int size = Udp.parsePacket();
     if (size >= NTP_PACKET_SIZE) {
       Serial.println("Receive NTP Response");
