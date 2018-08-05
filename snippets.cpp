@@ -29,20 +29,10 @@
 #include "snippets.h"
 
 
-IPAddress timeServer(132, 163, 97, 1); // time-a.timefreq.bldrdoc.gov
+//IPAddress timeServer(132, 163, 97, 1); // time-a.timefreq.bldrdoc.gov
 extern EthernetUDP Udp;
 
-void timeIp(IPAddress t_IP){
-  IPAddress timeServer(t_IP);
-}
 
-void setClock(){
-  setSyncProvider(getNtpTime);
-}
-
-void setClock(const char* addr){
-  setSyncProvider(getNtpTime);
-}
 
 int timeZone = -4;     // Eastern time
 
@@ -53,12 +43,10 @@ void setTimeZone(int zone){
 const int NTP_PACKET_SIZE = 48; // NTP time is in the first 48 bytes of message
 byte packetBuffer[NTP_PACKET_SIZE]; //buffer to hold incoming & outgoing packets
 
-
-time_t getNtpTime()
-{
+time_t getNtpTime(IPAddress &address) {
   while (Udp.parsePacket() > 0) ; // discard any previously received packets
   Serial.println("Transmit NTP Request");
-  sendNTPpacket(timeServer);
+  sendNTPpacket(address);
   uint32_t beginWait = millis();
   Serial.println("waiting");
   while (millis() - beginWait < 5000) {
@@ -76,10 +64,6 @@ time_t getNtpTime()
     }
   }
   Serial.println("No NTP Response :-(");
-  delay(100);//retry
-  time_t getTime =  getNtpTime();
-  if (getTime) return getTime;
-  else return 0; // return 0 if unable to get the time
 }
 
         // send an NTP request to the time server at the given address
@@ -115,30 +99,32 @@ void printTime(){
       digitalClockDisplay();  
     }
   }
- }
-
-
-void digitalClockDisplay(){
-  // digital clock display of the time
-  Serial.print(hour());
-  printDigits(minute());
-  printDigits(second());
-  Serial.print(" ");
-  Serial.print(day());
-  Serial.print("/");
-  if (month() < 10) Serial.print("0");
-  Serial.print(month());
-  Serial.print("/");
-  Serial.print(year()); 
-  Serial.println(); 
 }
 
-void printDigits(int digits){
+void digitalClockDisplay(){
+  digitalClockDisplay(now(), Serial);
+}
+
+void digitalClockDisplay(time_t t, HardwareSerial& stream) {
+  stream.print(hour(t));
+  printDigits(minute(t), stream);
+  printDigits(second(t), stream);
+  stream.print(" ");
+  stream.print(day(t));
+  stream.print("/");
+  if (month(t) < 10) stream.print("0");
+  stream.print(month(t));
+  stream.print("/");
+  stream.print(year(t)); 
+  stream.println(); 
+}
+
+void printDigits(int digits, HardwareSerial& stream){
   // utility for digital clock display: prints preceding colon and leading 0
-  Serial.print(":");
+  stream.print(":");
   if(digits < 10)
-    Serial.print('0');
-  Serial.print(digits);
+    stream.print('0');
+  stream.print(digits);
 }
 
 

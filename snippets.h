@@ -46,14 +46,13 @@ size_t SizeOfArray( const T(&)[ N ] )
   return N;
 }
 
-void setClock();
-
-time_t getNtpTime();
+//time_t getNtpTime();
+time_t getNtpTime(IPAddress &address);
 void sendNTPpacket(IPAddress &address);
-void printDigits(int digits);
+void printDigits(int digits, HardwareSerial& stream);
 void digitalClockDisplay();
+void digitalClockDisplay(time_t t, HardwareSerial& stream);
 void printTime();
-void timeIp(IPAddress t_IP);
 void setTimeZone(int zone);
 
 String onOffBool(bool inBool);
